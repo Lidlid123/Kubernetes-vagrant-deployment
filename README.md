@@ -1,8 +1,6 @@
 # Kubernetes-vagrant-deployment
 
 
-Here is a guide on how to deploy a Kubernetes cluster using Vagrant:
-
 1. First, make sure you have the Vagrant file that you uploaded to deploy all the nodes in the cluster.
 
 2. After successfully deploying the nodes, you can initiate the Kubernetes deployment for production/development (vanilla deployment).
