@@ -85,5 +85,3 @@
 That's it! You should now have a Kubernetes cluster up and running with Calico as the network plugin.
 
 Have fun! 😊
-
-Is there anything else I can help with? 😊
