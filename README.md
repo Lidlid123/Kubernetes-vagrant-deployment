@@ -1,7 +1,6 @@
 # Kubernetes-vagrant-deployment
 
-
-1. First, make sure you have the Vagrantfile  to deploy all the nodes in the cluster.
+1. First, make sure you have the Vagrantfile -> clone the repo .
 
 2. After successfully deploying the nodes, you can initiate the Kubernetes deployment for production/development (vanilla deployment).
 
@@ -21,9 +20,40 @@
       sysctl --system
       ```
    
-   4. Install Docker engine - container runtime (go to the Docker documentation and just install Docker).
+   4. Forward IPv4 and let iptables see bridged traffic by executing the following instructions:
    
-   5. Install Kubernetes components by running the following commands:
+      ```
+      cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+      overlay
+      br_netfilter
+      EOF
+
+      sudo modprobe overlay
+      sudo modprobe br_netfilter
+
+      # sysctl params required by setup, params persist across reboots
+      cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+      net.bridge.bridge-nf-call-iptables  = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.ipv4.ip_forward                 = 1
+      EOF
+
+      # Apply sysctl params without reboot
+      sudo sysctl --system
+      
+      # Verify that the br_netfilter, overlay modules are loaded by running the following commands:
+      
+      lsmod | grep br_netfilter
+      lsmod | grep overlay
+      
+      # Verify that the net.bridge.bridge-nf-call-iptables, net.bridge.bridge-nf-call-ip6tables, and net.ipv4.ip_forward system variables are set to 1 in your sysctl config by running the following command:
+      
+      sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward
+      ```
+   
+   5. Install Docker engine - container runtime (go to the Docker documentation and just install Docker).
+   
+   6. Install Kubernetes components by running the following commands:
    
       ```
       sudo apt-get update
@@ -55,3 +85,5 @@
 That's it! You should now have a Kubernetes cluster up and running with Calico as the network plugin.
 
 Have fun! 😊
+
+Is there anything else I can help with? 😊
