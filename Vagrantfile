@@ -13,8 +13,9 @@ Vagrant.configure("2") do |config|
       node.vm.provision "shell", inline: <<-SHELL
         apt-get update
         apt-get upgrade -y
-        echo 'root:*****' | chpasswd
+        echo 'root:password' | chpasswd
         sed -i 's/.*PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+        sed -i 's/.*PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
         systemctl restart sshd
         ufw disable
       SHELL
@@ -31,11 +32,11 @@ Vagrant.configure("2") do |config|
     node.vm.provision "shell", inline: <<-SHELL
       apt-get update
       apt-get upgrade -y
-      echo 'root:*****' | chpasswd
+      echo 'root:password' | chpasswd
       sed -i 's/.*PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+      sed -i 's/.*PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
       systemctl restart sshd
       ufw disable
     SHELL
   end
 end
-
